@@ -5,33 +5,18 @@
 #         self.left = left
 #         self.right = right
 class Solution:
+    def dfs(self, root:Optional[TreeNode],cur:Optional[TreeNode],k: int):
+        if(cur is None):
+            return False
+        
+        return self.search(root, cur, k-cur.val) or self.dfs(root, cur.left, k) or self.dfs(root, cur.right, k)
     
-    def inorder(self, root: Optional[TreeNode], nums:List[int]):
+    def search(self, root:Optional[TreeNode],cur:Optional[TreeNode],val:int):
         if(root is None):
-            return
+            return False
         
-        self.inorder(root.left, nums)
-        nums.append(root.val)
-        self.inorder(root.right,nums)
+        return ((root.val == val) and (root!=cur))or((root.val < val) and self.search(root.right, cur, val)) or ((root.val > val) and self.search(root.left, cur, val))
         
-    def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
-
-        # 2. Inorder traversal method
-        
-        nums = []
-        self.inorder(root, nums)
-        
-        low = 0
-        high = len(nums) - 1
-        while(low<high):
-            if(nums[low] + nums[high] == k):
-                return True
-            
-            if(nums[low] + nums[high] > k):
-                high -=1
-            
-            else:
-                low += 1
-        
-        return False
     
+    def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
+        return self.dfs(root, root, k)
