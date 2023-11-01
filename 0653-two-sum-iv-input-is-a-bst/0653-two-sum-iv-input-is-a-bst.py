@@ -5,20 +5,33 @@
 #         self.left = left
 #         self.right = right
 class Solution:
+    
+    def inorder(self, root: Optional[TreeNode], nums:List[int]):
+        if(root is None):
+            return
+        
+        self.inorder(root.left, nums)
+        nums.append(root.val)
+        self.inorder(root.right,nums)
+        
     def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
-#         1. Set method
-        def dfs(root:Optional[TreeNode], s:set[int], k:int) -> bool:
-            if(root is None):
-                return False
-            
-            comp = k - root.val
-            if(comp in s):
+
+        # 2. Inorder traversal method
+        
+        nums = []
+        self.inorder(root, nums)
+        
+        low = 0
+        high = len(nums) - 1
+        while(low<high):
+            if(nums[low] + nums[high] == k):
                 return True
             
-            s.add(root.val)
+            if(nums[low] + nums[high] > k):
+                high -=1
             
-            return dfs(root.left, s, k) or dfs(root.right, s, k)
+            else:
+                low += 1
         
-        s = set({})
-        return dfs(root, s, k)
+        return False
     
