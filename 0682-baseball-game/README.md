@@ -4,7 +4,6 @@
 
 <ul>
 	<li>An integer <code>x</code>.
-
 	<ul>
 		<li>Record a new score of <code>x</code>.</li>
 	</ul>
@@ -25,7 +24,6 @@
 	</ul>
 	</li>
 </ul>
-
 <p>Return <em>the sum of all the scores on the record after applying all the operations</em>.</p>
 
 <p>The test cases are generated such that the answer and all intermediate calculations fit in a <strong>32-bit</strong> integer and that all operations are valid.</p>
