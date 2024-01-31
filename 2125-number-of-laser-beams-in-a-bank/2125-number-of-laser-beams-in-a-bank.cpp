@@ -1,6 +1,8 @@
 class Solution {
 public:
     int numberOfBeams(vector<string>& bank) {
+         ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
         int n = bank.size();
         int m = bank[0].length();
         int prev{0}, curr{0}, res{0};
