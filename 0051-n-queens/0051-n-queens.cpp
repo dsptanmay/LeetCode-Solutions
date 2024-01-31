@@ -1,79 +1,45 @@
-#define pb push_back
-#define ppb pop_back
-#define ll long long
-#define vts vector<string>
-#define vvts vector<vts>
-#define all(x) x.begin(), x.end()
-#define accm(x, y) accumulate((x), (y))
-
-
 class Solution {
 private:
-    vvts res;
+    vector<vector<string>> res;
 public:
-    Solution() : res() {}
-    
-    bool isSafe(int row, int col, vts& board, int n)
+    Solution() : res()
     {
-        int _row = row;
-        int _col = col;
-        
-        while(row >= 0 && col >= 0)
-        {
-            if(board[row][col] == 'Q')
-                return false;
-            row--;
-            col--;
-        }
-        
-        col = _col;
-        row = _row;
-        
-        while(col >= 0)
-        {
-            if(board[row][col] == 'Q')
-                return false;
-            col--;
-        }
-        
-        // row = _row;
-        col = _col;
-        
-        while(row < n && col >= 0)
-        {
-            if(board[row][col] == 'Q')
-                return false;
-            row++;
-            col--;
-        }
-        return true;
-        return true;
     }
-    void findAns(int col, vts& board, int n)
+    void findAns(int col, vector<string>& board, vector<int>& leftRow, vector<int>& upperDiagonal, vector<int>& lowerDiagonal, int n)
     {
         if(col == n)
         {
-            res.pb(board);
+            res.push_back(board);
             return;
         }
-        
         for(int row=0; row<n; ++row)
         {
-            if(isSafe(row, col, board, n))
+            if(leftRow[row] == 0 && lowerDiagonal[row+col] == 0 && upperDiagonal[n-1+col-row] == 0)
             {
                 board[row][col] = 'Q';
-                findAns(col + 1, board, n);
+                leftRow[row] = 1;
+                lowerDiagonal[row + col] = 1;
+                upperDiagonal[n - 1 + col - row] = 1;
+                
+                findAns(col + 1, board, leftRow, upperDiagonal, lowerDiagonal, n);
+                
+                upperDiagonal[n - 1 + col - row] = 0;
+                lowerDiagonal[row + col] = 0;
+                leftRow[row] = 0;
                 board[row][col] = '.';
+                
             }
         }
     }
-    vector<vector<string>> solveNQueens(int n) 
-    {
-        vts board(n);
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> board(n);
         string s(n, '.');
         for(int i=0; i<n; ++i)
             board[i] = s;
-        findAns(0, board, n);
+        
+        vector<int> leftRow(n, 0), upperDiagonal(2 * n - 1, 0), lowerDiagonal(2 * n - 1, 0);
+        
+        findAns(0, board, leftRow, upperDiagonal, lowerDiagonal, n);
         return res;
     }
 };
